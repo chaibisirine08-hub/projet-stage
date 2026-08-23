@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}DomainAI — AI Domain Name Generator{% endblock %}
+
+{% block content %}
+<main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-badge">
+            <span>✦</span>
+            AI-powered domain discovery
+        </div>
+
+        <h1>
+            Find a domain name<br>
+            <span>as unique as your idea.</span>
+        </h1>
+
+        <p class="hero-description">
+            Describe your project and let AI create creative,
+            memorable domain names for your next big idea.
+        </p>
+
+
+        <!-- GENERATOR CARD -->
+        <div class="generator-card">
+
+            <form id="generator-form" action="/generate" method="POST">
+
+                <label for="description">
+                    Tell us about your project
+                </label>
+
+                <div class="textarea-wrapper">
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Example: An online store selling modern Moroccan clothing for young women..."
+                        required></textarea>
+
+                    <div class="textarea-footer">
+
+                        <span class="textarea-hint">
+                            ✨ Be as specific as possible
+                        </span>
+
+                        <span class="character-count">
+                            0 / 500
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+                <div class="options-row">
+
+                    <div class="extension-group">
+
+                        <label for="extension">
+                            Domain extension
+                        </label>
+
+                        <select id="extension" name="extension">
+                            <option value=".com">.com</option>
+                            <option value=".ma">.ma</option>
+                            <option value=".net">.net</option>
+                            <option value=".org">.org</option>
+                            <option value=".io">.io</option>
+                            <option value=".ai">.ai</option>
+                        </select>
+
+                    </div>
+
+
+                    <button type="submit" class="generate-button" id="submit-btn">
+                        <span class="btn-spark">✦</span>
+                        <span class="btn-text">Generate names</span>
+                        <span class="arrow">&rarr;</span>
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- FEATURES -->
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div>
+                    <strong>Fast generation</strong>
+                    <span>AI-powered suggestions</span>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                <div>
+                    <strong>Availability check</strong>
+                    <span>Check your domain instantly</span>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <div>
+                    <strong>Simple & private</strong>
+                    <span>Your ideas stay yours</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-label">
+            HOW IT WORKS
+        </div>
+
+        <h2>
+            From idea to domain<br>
+            <span>in three simple steps.</span>
+        </h2>
+
+        <div class="steps">
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+                    💡
+                </div>
+
+                <h3>
+                    Describe your idea
+                </h3>
+
+                <p>
+                    Tell us what you're building,
+                    your business, or your project.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+                    ✨
+                </div>
+
+                <h3>
+                    AI generates names
+                </h3>
+
+                <p>
+                    Gemini creates creative and
+                    memorable names tailored to your idea.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+                    🌐
+                </div>
+
+                <h3>
+                    Check availability
+                </h3>
+
+                <p>
+                    Instantly see which domain names
+                    are available to register.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(248, 249, 252, 0.95); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(10px);">
+    <div class="loader-spark" style="font-size: 50px; animation: pulse 1.5s infinite ease-in-out; margin-bottom: 25px; color: #6d5dfc;">✦</div>
+    <h2 style="font-size: 24px; font-weight: 850; color: #171827; margin-bottom: 8px; letter-spacing: -0.5px;">Generating domain names...</h2>
+    <p style="color: #727487; font-size: 15px; font-weight: 500; text-align: center; max-width: 300px;">Gemini is creating unique brand suggestions and checking their availability.</p>
+</div>
+
+<style>
+@keyframes pulse {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+    50% { transform: scale(1.3) rotate(180deg); opacity: 1; color: #9b7cff; }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const textarea = document.getElementById("description");
+    const counter = document.querySelector(".character-count");
+
+    textarea.addEventListener("input", function () {
+        const length = textarea.value.length;
+        counter.textContent = length + " / 500";
+        if (length > 500) {
+            textarea.value = textarea.value.substring(0, 500);
+        }
+    });
+
+    const form = document.getElementById("generator-form");
+    const loadingOverlay = document.getElementById("loading-overlay");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", function () {
+        // Show loading state overlay
+        loadingOverlay.style.display = "flex";
+        
+        // Disable submit button to prevent double-clicks
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+        submitBtn.querySelector(".btn-text").textContent = "Processing...";
+    });
+</script>
+{% endblock %}

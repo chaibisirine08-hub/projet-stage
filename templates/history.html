@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}DomainAI — Name Generation History{% endblock %}
+
+{% block content %}
+<main class="results-page" style="min-height: calc(100vh - 212px);">
+
+    <!-- HEADER -->
+    <section class="results-header" style="margin-bottom: 35px;">
+        <div class="hero-badge">
+            <span>✦</span>
+            Search logs
+        </div>
+        <h1 style="font-size: clamp(36px, 5vw, 54px);">
+            Your history<span> records.</span>
+        </h1>
+        <p>A chronological record of your projects and checked domain name suggestions.</p>
+    </section>
+
+    <!-- HISTORY ACCORDION -->
+    <section class="history-section" style="max-width: 850px; margin: 0 auto;">
+        
+        {% if history %}
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                {% for item in history %}
+                    <div class="history-card" style="background: white; border: 1px solid #e7e7ef; border-radius: 18px; overflow: hidden; box-shadow: 0 5px 20px rgba(30,30,60,0.02); transition: 0.25s;">
+                        
+                        <!-- CARD HEADER -->
+                        <div class="history-card-header" onclick="toggleHistory('{{ item.id }}')" style="padding: 22px 25px; display: flex; align-items: center; justify-content: space-between; gap: 20px; cursor: pointer; background: #fafafc; border-bottom: 1px solid #ececf2; transition: 0.2s;"
+                             onmouseover="this.style.background='#f3f3f7';" onmouseout="this.style.background='#fafafc';">
+                            
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                    <span style="font-size: 11px; font-weight: 800; color: #6d5dfc; text-transform: uppercase; letter-spacing: 1px; background: #f0edff; padding: 4px 8px; border-radius: 6px;">
+                                        {{ item.extension }}
+                                    </span>
+                                    <span style="font-size: 12px; color: #9293a0; font-weight: 600;">
+                                        {{ item.timestamp.strftime('%Y-%m-%d %H:%M') }}
+                                    </span>
+                                </div>
+                                <h3 style="font-size: 15px; font-weight: 700; color: #171827; margin: 0; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    "{{ item.description }}"
+                                </h3>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div style="display: flex; gap: 10px; font-size: 12px; font-weight: 700; color: #727487; text-align: right; white-space: nowrap;">
+                                    <span>🟢 {{ item.available_count }} Available</span>
+                                </div>
+                                <span id="arrow-{{ item.id }}" style="font-size: 18px; color: #a1a2af; transition: transform 0.3s; transform: rotate(0deg);">&#9662;</span>
+                            </div>
+
+                        </div>
+
+                        <!-- CARD BODY (COLLAPSIBLE) -->
+                        <div id="body-{{ item.id }}" style="display: none; padding: 25px; border-top: 1px solid #ececf2;">
+                            
+                            <div style="margin-bottom: 20px; font-size: 14px; color: #4b4c5c;">
+                                <strong style="color: #6d5dfc; display: block; font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase;">
+                                    Original project description
+                                </strong>
+                                <p style="margin: 0; line-height: 1.6; background: #f8f9fc; padding: 15px; border-radius: 10px; border-left: 3px solid #6d5dfc;">
+                                    {{ item.description }}
+                                </p>
+                            </div>
+
+                            <strong style="color: #6d5dfc; display: block; font-size: 11px; font-weight: 800; letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase;">
+                                Suggestions list & Availability
+                            </strong>
+
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                {% for dom in item.results %}
+                                    <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #ececf2; border-radius: 10px; padding: 12px 16px; background: #fdfdfd;">
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            {% if dom.status == 'available' %}
+                                                <span style="width: 24px; height: 24px; border-radius: 6px; background: #eaf8f0; color: #19935a; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;">✓</span>
+                                                <div>
+                                                    <span style="font-weight: 700; color: #171827; font-size: 14px;">{{ dom.name }}</span>
+                                                    <span style="display: block; font-size: 10px; color: #19935a; font-weight: 700;">Available</span>
+                                                </div>
+                                            {% elif dom.status == 'unavailable' %}
+                                                <span style="width: 24px; height: 24px; border-radius: 6px; background: #fff0f0; color: #d94a4a; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;">×</span>
+                                                <div>
+                                                    <span style="font-weight: 700; color: #171827; font-size: 14px; text-decoration: line-through; opacity: 0.6;">{{ dom.name }}</span>
+                                                    <span style="display: block; font-size: 10px; color: #d94a4a; font-weight: 700;">Registered</span>
+                                                </div>
+                                            {% else %}
+                                                <span style="width: 24px; height: 24px; border-radius: 6px; background: #fff7e8; color: #c27b18; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;">?</span>
+                                                <div>
+                                                    <span style="font-weight: 700; color: #171827; font-size: 14px;">{{ dom.name }}</span>
+                                                    <span style="display: block; font-size: 10px; color: #c27b18; font-weight: 700;">Could not verify</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {% if dom.status == 'available' %}
+                                            <button class="copy-button" onclick="copyDomain('{{ dom.name }}', this)" style="padding: 7px 12px; font-size: 11px;">
+                                                Copy
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 60px 20px; background: white; border: 1px solid #e7e7ef; border-radius: 20px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
+                <h3 style="font-size: 18px; font-weight: 800; color: #333445; margin-bottom: 8px;">No search logs recorded</h3>
+                <p style="font-size: 14px; color: #9293a0; max-width: 320px; margin: 0 auto 25px;">Search history logs are created and persistent once you execute a domain check.</p>
+                <a href="/" class="new-search-button" style="padding: 12px 24px; font-size: 14px;">Start Name Generation</a>
+            </div>
+        {% endif %}
+
+    </section>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleHistory(id) {
+        const body = document.getElementById('body-' + id);
+        const arrow = document.getElementById('arrow-' + id);
+        
+        if (body.style.display === 'none') {
+            body.style.display = 'block';
+            arrow.style.transform = 'rotate(180deg)';
+        } else {
+            body.style.display = 'none';
+            arrow.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function copyDomain(domain, button) {
+        navigator.clipboard.writeText(domain);
+        const originalText = button.innerHTML;
+        button.innerHTML = "✓ Copied";
+        button.style.color = "#19935a";
+        button.style.borderColor = "#19935a";
+        
+        setTimeout(function () {
+            button.innerHTML = originalText;
+            button.style.color = "";
+            button.style.borderColor = "";
+        }, 1500);
+    }
+</script>
+{% endblock %}

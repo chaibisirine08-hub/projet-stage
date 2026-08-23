@@ -1,0 +1,21 @@
+# Environments
+venv/
+.env
+
+# Python caching
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+instance/
+*.db
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node modules (just in case they run npm installs)
+node_modules/
+package-lock.json

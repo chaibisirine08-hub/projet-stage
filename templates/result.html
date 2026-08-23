@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}DomainAI — Results{% endblock %}
+
+{% block content %}
+<main class="results-page" style="min-height: calc(100vh - 212px);">
+
+    <!-- HEADER -->
+    <section class="results-header">
+        <div class="hero-badge">
+            <span>✦</span>
+            AI-generated results
+        </div>
+        <h1>
+            Your domain<span> results.</span>
+        </h1>
+        <p>We generated domain names based on your project and checked their availability.</p>
+    </section>
+
+
+    <!-- PROJECT DETAILS -->
+    <section class="project-box">
+        <div class="project-icon">
+            💡
+        </div>
+        <div>
+            <span class="project-label">
+                YOUR PROJECT
+            </span>
+            <p style="font-weight: 600; color: #333445; font-size: 15px; margin: 0; line-height: 1.5;">
+                {{ description }}
+            </p>
+        </div>
+    </section>
+
+
+    <!-- AVAILABLE DOMAINS -->
+    {% set has_available = namespace(value=false) %}
+    {% for domain in domains %}
+        {% if domain.status == 'available' %}
+            {% set has_available.value = true %}
+        {% endif %}
+    {% endfor %}
+
+    <section class="result-section available-section" style="border-left: 4px solid #19935a;">
+        <div class="section-heading">
+            <div class="section-title">
+                <div class="section-status-icon available-icon">✓</div>
+                <div>
+                    <h2>Available domains</h2>
+                    <p>These domains appear to be available for registration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="domain-list">
+            {% if has_available.value %}
+                {% for domain in domains %}
+                    {% if domain.status == "available" %}
+                        <div class="clean-domain-card">
+                            <div class="domain-info">
+                                <div class="domain-symbol available-symbol">✓</div>
+                                <div>
+                                    <div class="domain-name">{{ domain.name }}</div>
+                                    <div class="domain-status available">Available</div>
+                                </div>
+                            </div>
+                            <button class="copy-button" onclick="copyDomain('{{ domain.name }}', this)">
+                                Copy
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; padding: 25px; color: #727487; font-size: 14px; font-weight: 600; background: #fafafc; border-radius: 12px; border: 1px dashed #ececf2;">
+                    😔 No available domains found in this run. Try another description.
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+    <!-- UNAVAILABLE DOMAINS -->
+    {% set has_unavailable = namespace(value=false) %}
+    {% for domain in domains %}
+        {% if domain.status == 'unavailable' %}
+            {% set has_unavailable.value = true %}
+        {% endif %}
+    {% endfor %}
+
+    <section class="result-section unavailable-section" style="border-left: 4px solid #d94a4a;">
+        <div class="section-heading">
+            <div class="section-title">
+                <div class="section-status-icon unavailable-icon">×</div>
+                <div>
+                    <h2>Unavailable domains</h2>
+                    <p>These domains are already registered by others.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="domain-list">
+            {% if has_unavailable.value %}
+                {% for domain in domains %}
+                    {% if domain.status == "unavailable" %}
+                        <div class="clean-domain-card" style="opacity: 0.85;">
+                            <div class="domain-info">
+                                <div class="domain-symbol unavailable-symbol">×</div>
+                                <div>
+                                    <div class="domain-name" style="text-decoration: line-through; opacity: 0.7;">{{ domain.name }}</div>
+                                    <div class="domain-status unavailable">Registered</div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; padding: 25px; color: #727487; font-size: 14px; font-weight: 600; background: #fafafc; border-radius: 12px; border: 1px dashed #ececf2;">
+                    🎉 Good news! None of the generated domains are taken.
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+    <!-- UNKNOWN / UNVERIFIED DOMAINS -->
+    {% set has_unknown = namespace(value=false) %}
+    {% for domain in domains %}
+        {% if domain.status == 'unknown' %}
+            {% set has_unknown.value = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if has_unknown.value %}
+    <section class="result-section unknown-section" style="border-left: 4px solid #c27b18;">
+        <div class="section-heading">
+            <div class="section-title">
+                <div class="section-status-icon unknown-icon">?</div>
+                <div>
+                    <h2>Could not verify</h2>
+                    <p>We couldn't determine the current status of these domains.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="domain-list">
+            {% for domain in domains %}
+                {% if domain.status == "unknown" %}
+                    <div class="clean-domain-card">
+                        <div class="domain-info">
+                            <div class="domain-symbol unknown-symbol">?</div>
+                            <div>
+                                <div class="domain-name">{{ domain.name }}</div>
+                                <div class="domain-status unknown">Unable to verify</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- NEW SEARCH -->
+    <section class="new-search">
+        <p>Want to try another description?</p>
+        <a href="/" class="new-search-button">
+            &larr; Generate new names
+        </a>
+    </section>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyDomain(domain, button) {
+    navigator.clipboard.writeText(domain);
+    const originalText = button.innerHTML;
+    button.innerHTML = "✓ Copied";
+    button.style.color = "#19935a";
+    button.style.borderColor = "#19935a";
+    button.style.background = "#eaf8f0";
+
+    setTimeout(function () {
+        button.innerHTML = originalText;
+        button.style.color = "";
+        button.style.borderColor = "";
+        button.style.background = "";
+    }, 1500);
+}
+</script>
+{% endblock %}

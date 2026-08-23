@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DomainAI — AI Domain Name Generator{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="logo" onclick="window.location.href='/'" style="cursor: pointer;">
+            <div class="logo-icon">✦</div>
+            <span>Domain<span class="logo-ai">AI</span></span>
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard">Dashboard</a>
+                <a href="/history">History</a>
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/login">Login / Register</a>
+            {% endif %}
+        </nav>
+
+        <div class="nav-badge">
+            {% if current_user.is_authenticated %}
+                👤 {{ current_user.username }}
+            {% else %}
+                ✨ AI Powered
+            {% endif %}
+        </div>
+
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container" style="max-width: 850px; margin: 20px auto 0; padding: 0 25px;">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}" style="padding: 12px 20px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; 
+                        {% if category == 'error' or category == 'danger' %}
+                            background: #fff0f0; color: #d94a4a; border: 1px solid #ffcccc;
+                        {% else %}
+                            background: #eaf8f0; color: #19935a; border: 1px solid #ccffdd;
+                        {% endif %}">
+                        <span>{{ message }}</span>
+                        <span style="cursor: pointer; font-size: 18px;" onclick="this.parentElement.style.display='none'">&times;</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            ✦ DomainAI
+        </div>
+        <p>
+            AI-powered domain name discovery.
+        </p>
+        <span>
+            © 2026 DomainAI
+        </span>
+    </footer>
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+
+</html>

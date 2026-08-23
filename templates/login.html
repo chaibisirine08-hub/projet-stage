@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}DomainAI — Access Your Account{% endblock %}
+
+{% block content %}
+<main class="auth-page" style="min-height: calc(100vh - 212px); display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    
+    <div class="auth-card" style="width: 100%; max-width: 440px; background: white; border: 1px solid #e7e7ef; border-radius: 22px; padding: 35px; box-shadow: 0 20px 50px rgba(30,30,60,0.06);">
+        
+        <div class="auth-header" style="text-align: center; margin-bottom: 30px;">
+            <div class="logo-icon" style="margin: 0 auto 12px; width: 44px; height: 44px; font-size: 24px; border-radius: 12px;">✦</div>
+            <h2 style="font-size: 24px; font-weight: 800; color: #171827; letter-spacing: -0.5px;">Welcome to DomainAI</h2>
+            <p style="color: #727487; font-size: 14px; margin-top: 5px;">Sign in or create a new account to save your generated domains.</p>
+        </div>
+
+        <!-- Tab Selection -->
+        <div class="auth-tabs" style="display: flex; border-bottom: 2px solid #ececf2; margin-bottom: 25px;">
+            <button id="tab-login" onclick="switchTab('login')" style="flex: 1; padding: 12px; background: none; border: none; border-bottom: 2px solid #6d5dfc; font-size: 15px; font-weight: 700; color: #6d5dfc; cursor: pointer; transition: 0.2s;">
+                Login
+            </button>
+            <button id="tab-register" onclick="switchTab('register')" style="flex: 1; padding: 12px; background: none; border: none; border-bottom: 2px solid transparent; font-size: 15px; font-weight: 700; color: #6b6d7c; cursor: pointer; transition: 0.2s;">
+                Register
+            </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" action="/login" method="POST" style="display: block;">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="login-username" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Username</label>
+                <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required 
+                           style="width: 100%; height: 48px; border: none; background: transparent; padding: 0 15px; font-family: inherit; font-size: 14px; color: #222333; outline: none;">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label for="login-password" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Password</label>
+                <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required 
+                           style="width: 100%; height: 48px; border: none; background: transparent; padding: 0 15px; font-family: inherit; font-size: 14px; color: #222333; outline: none;">
+                </div>
+            </div>
+
+            <button type="submit" class="generate-button" style="width: 100%; height: 48px; border-radius: 10px; min-width: unset; font-size: 15px;">
+                Log In
+            </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" action="/register" method="POST" style="display: none;">
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="reg-username" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Choose Username</label>
+                <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
+                    <input type="text" id="reg-username" name="username" placeholder="e.g. researcher123" required 
+                           style="width: 100%; height: 48px; border: none; background: transparent; padding: 0 15px; font-family: inherit; font-size: 14px; color: #222333; outline: none;">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="reg-password" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Password</label>
+                <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
+                    <input type="password" id="reg-password" name="password" placeholder="Create a strong password" required 
+                           style="width: 100%; height: 48px; border: none; background: transparent; padding: 0 15px; font-family: inherit; font-size: 14px; color: #222333; outline: none;">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label for="reg-password-confirm" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Confirm Password</label>
+                <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
+                    <input type="password" id="reg-password-confirm" name="password_confirm" placeholder="Repeat your password" required 
+                           style="width: 100%; height: 48px; border: none; background: transparent; padding: 0 15px; font-family: inherit; font-size: 14px; color: #222333; outline: none;">
+                </div>
+            </div>
+
+            <button type="submit" class="generate-button" style="width: 100%; height: 48px; border-radius: 10px; min-width: unset; font-size: 15px; background: linear-gradient(135deg, #9b7cff, #6d5dfc);">
+                Create Account
+            </button>
+        </form>
+
+    </div>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function switchTab(mode) {
+        const loginForm = document.getElementById('login-form');
+        const regForm = document.getElementById('register-form');
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+
+        if (mode === 'login') {
+            loginForm.style.display = 'block';
+            regForm.style.display = 'none';
+            tabLogin.style.borderBottomColor = '#6d5dfc';
+            tabLogin.style.color = '#6d5dfc';
+            tabRegister.style.borderBottomColor = 'transparent';
+            tabRegister.style.color = '#6b6d7c';
+        } else {
+            loginForm.style.display = 'none';
+            regForm.style.display = 'block';
+            tabLogin.style.borderBottomColor = 'transparent';
+            tabLogin.style.color = '#6b6d7c';
+            tabRegister.style.borderBottomColor = '#6d5dfc';
+            tabRegister.style.color = '#6d5dfc';
+        }
+    }
+
+    // Automatically toggle registration form if register parameter is present in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('action') === 'register') {
+        switchTab('register');
+    }
+</script>
+{% endblock %}
