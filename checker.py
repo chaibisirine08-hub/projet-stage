@@ -6,12 +6,29 @@ from whois.exceptions import WhoisDomainNotFoundError, PywhoisError
 def check_domain(domain):
     """
     Checks if a domain name is available.
-    Uses whois library first, and falls back to rdap.org API if whois fails or is inconclusive.
+    Uses rdap.org first, then falls back to the WHOIS library when needed.
     Returns: 'available', 'unavailable', or 'unknown'
     """
     domain = domain.strip().lower()
 
-    # Method 1: Use python-whois
+    # RDAP gives an unambiguous registry answer for supported extensions:
+    # 200 means a record exists, while 404 means the domain is available.
+    # Check it before WHOIS because some WHOIS servers echo the queried name
+    # even when no domain record exists.
+    try:
+        url = f"https://rdap.org/domain/{domain}"
+        print(f"RDAP check for: {domain}")
+        response = requests.get(url, timeout=8)
+
+        print(f"RDAP: {domain} response status: {response.status_code}")
+        if response.status_code == 200:
+            return "unavailable"
+        if response.status_code == 404:
+            return "available"
+    except requests.RequestException as e:
+        print(f"RDAP error for {domain}: {e}. Trying WHOIS fallback...")
+
+    # WHOIS is a fallback for registries that are not available through RDAP.
     try:
         print(f"WHOIS check for: {domain}")
         w = whois.whois(domain)

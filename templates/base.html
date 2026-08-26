@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}DomainAI — AI Domain Name Generator{% endblock %}</title>
+    <title>{% block title %}Naja7Domain — Domain Name Generator{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
@@ -14,8 +14,8 @@
     <header class="navbar">
 
         <div class="logo" onclick="window.location.href='/'" style="cursor: pointer;">
-            <div class="logo-icon">✦</div>
-            <span>Domain<span class="logo-ai">AI</span></span>
+            <div class="logo-icon">N</div>
+            <span>Naja7<span class="logo-ai">Domain</span></span>
         </div>
 
         <nav>
@@ -31,9 +31,9 @@
 
         <div class="nav-badge">
             {% if current_user.is_authenticated %}
-                👤 {{ current_user.username }}
+                🧑‍💻 {{ current_user.username }}
             {% else %}
-                ✨ AI Powered
+                💻 Smart Search
             {% endif %}
         </div>
 
@@ -64,13 +64,13 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-logo">
-            ✦ DomainAI
+            Naja7Domain
         </div>
         <p>
-            AI-powered domain name discovery.
+            Smart domain name suggestions and availability checks for Naja7Host.
         </p>
         <span>
-            © 2026 DomainAI
+            © 2026 Naja7Host
         </span>
     </footer>
 

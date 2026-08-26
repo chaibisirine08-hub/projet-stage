@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}DomainAI — Results{% endblock %}
+{% block title %}Naja7Domain — Results{% endblock %}
 
 {% block content %}
 <main class="results-page" style="min-height: calc(100vh - 212px);">
@@ -8,20 +8,20 @@
     <!-- HEADER -->
     <section class="results-header">
         <div class="hero-badge">
-            <span>✦</span>
-            AI-generated results
+            <span>💻</span>
+            Domain suggestions
         </div>
         <h1>
-            Your domain<span> results.</span>
+            Your search<span> results.</span>
         </h1>
-        <p>We generated domain names based on your project and checked their availability.</p>
+        <p>Here are your generated brand name ideas and their current domain availability.</p>
     </section>
 
 
     <!-- PROJECT DETAILS -->
     <section class="project-box">
         <div class="project-icon">
-            💡
+            🧩
         </div>
         <div>
             <span class="project-label">
@@ -48,7 +48,7 @@
                 <div class="section-status-icon available-icon">✓</div>
                 <div>
                     <h2>Available domains</h2>
-                    <p>These domains appear to be available for registration.</p>
+                    <p>These domains appear to be available to register.</p>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                 {% endfor %}
             {% else %}
                 <div style="text-align: center; padding: 25px; color: #727487; font-size: 14px; font-weight: 600; background: #fafafc; border-radius: 12px; border: 1px dashed #ececf2;">
-                    😔 No available domains found in this run. Try another description.
+                    No available domains were found. Try adding different details.
                 </div>
             {% endif %}
         </div>
@@ -93,8 +93,8 @@
             <div class="section-title">
                 <div class="section-status-icon unavailable-icon">×</div>
                 <div>
-                    <h2>Unavailable domains</h2>
-                    <p>These domains are already registered by others.</p>
+                    <h2>Registered domains</h2>
+                    <p>These domains are already registered by other users.</p>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                                 <div class="domain-symbol unavailable-symbol">×</div>
                                 <div>
                                     <div class="domain-name" style="text-decoration: line-through; opacity: 0.7;">{{ domain.name }}</div>
-                                    <div class="domain-status unavailable">Registered</div>
+                                    <div class="domain-status unavailable">Already registered</div>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                 {% endfor %}
             {% else %}
                 <div style="text-align: center; padding: 25px; color: #727487; font-size: 14px; font-weight: 600; background: #fafafc; border-radius: 12px; border: 1px dashed #ececf2;">
-                    🎉 Good news! None of the generated domains are taken.
+                    Great news! None of the suggested domains are taken.
                 </div>
             {% endif %}
         </div>
@@ -138,7 +138,7 @@
                 <div class="section-status-icon unknown-icon">?</div>
                 <div>
                     <h2>Could not verify</h2>
-                    <p>We couldn't determine the current status of these domains.</p>
+                    <p>We could not determine the availability of these domains.</p>
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@
                             <div class="domain-symbol unknown-symbol">?</div>
                             <div>
                                 <div class="domain-name">{{ domain.name }}</div>
-                                <div class="domain-status unknown">Unable to verify</div>
+                                <div class="domain-status unknown">Verification unavailable</div>
                             </div>
                         </div>
                     </div>
@@ -164,9 +164,9 @@
 
     <!-- NEW SEARCH -->
     <section class="new-search">
-        <p>Want to try another description?</p>
+        <p>Would you like to run another search?</p>
         <a href="/" class="new-search-button">
-            &larr; Generate new names
+            &larr; Back to home
         </a>
     </section>
 
