@@ -25,6 +25,7 @@
 
         <!-- Login Form -->
         <form id="login-form" action="/login" method="POST" style="display: block;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="login-username" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Username</label>
                 <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">
@@ -48,6 +49,7 @@
 
         <!-- Register Form -->
         <form id="register-form" action="/register" method="POST" style="display: none;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group" style="margin-bottom: 20px;">
                 <label for="reg-username" style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: #27283a;">Choose Username</label>
                 <div class="textarea-wrapper" style="border-radius: 10px; background: #fbfbfd;">

@@ -74,6 +74,7 @@
                                     <span>🔴 {{ search.unavailable_count }} Registered</span>
                                 </div>
                                 <form action="/generate" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="description" value="{{ search.description }}">
                                     <input type="hidden" name="extension" value="{{ search.extension }}">
                                     <button type="submit" style="background: none; border: none; font-size: 13px; font-weight: 700; color: #0b5fa5; cursor: pointer; display: flex; align-items: center; gap: 4px;">

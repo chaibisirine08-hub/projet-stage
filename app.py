@@ -6,11 +6,15 @@ load_dotenv()
 
 from flask import Flask
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from models import db, User
 from routes import main_bp
 
 
 app = Flask(__name__)
+
+# Initialize CSRF Protection
+csrf = CSRFProtect(app)
 
 # Flask configuration
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-key-domain-ai-12345")
@@ -22,6 +26,7 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.login_view = "main.login"
+login_manager.login_message = "Veuillez vous connecter pour utiliser le générateur de domaines."
 login_manager.login_message_category = "error"
 login_manager.init_app(app)
 

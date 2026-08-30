@@ -27,6 +27,7 @@
         <div class="generator-card">
 
             <form id="generator-form" action="/generate" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                 <label for="description">
                     Describe your project or business idea

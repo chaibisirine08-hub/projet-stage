@@ -23,10 +23,10 @@ The user wants a domain name for this project:
 
 Generate 10 creative, highly original, and modern brand-name candidates suitable for a website.
 
-CRITICAL RULES:
-- Invent new brandable words.
-- Prefer unusual combinations of sounds and syllables.
-- Avoid common dictionary words.
+CRITICAL RULES FOR RELEVANCE AND QUALITY:
+- RELEVANCE TO DESCRIPTION: The generated names MUST strongly align with the core concept, sector, themes, and keywords of the user's description: "{description}". They must evoke the right industry, feeling, and context.
+- BRANDABLE WORDS: Invent new, creative brandable words. You can blend syllables, create portmanteaus, or use evocative sounds, but they must be clearly reminiscent of the business idea.
+- Avoid generic dictionary words.
 - Do not use spaces.
 - Do not use hyphens.
 - Use only letters (a-z).
@@ -37,13 +37,6 @@ CRITICAL RULES:
 - Return ONLY the names.
 - Put exactly one name on each line.
 - Do NOT include numbers, bullet points, introduction, or explanations.
-
-Example of style:
-Velunara
-Zenvoria
-Mirelune
-Novyra
-Elvaris
 """
 
     try:

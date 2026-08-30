@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,7 +15,21 @@ def home():
 
 
 @main_bp.route("/generate", methods=["POST"])
+@login_required
 def generate():
+    # Rate limit check: 50 searches per month
+    now = datetime.utcnow()
+    start_of_month = datetime(now.year, now.month, 1)
+    
+    monthly_searches_count = SearchHistory.query.filter(
+        SearchHistory.user_id == current_user.id,
+        SearchHistory.timestamp >= start_of_month
+    ).count()
+    
+    if monthly_searches_count >= 50:
+        flash("Vous avez atteint votre limite de 50 générations pour ce mois.", "error")
+        return redirect(url_for("main.dashboard"))
+
     description = request.form.get("description", "").strip()
     extension = request.form.get("extension", ".com").strip()
 
@@ -125,7 +140,7 @@ def register():
         return redirect(url_for("main.login", action="register"))
 
 
-@main_bp.route("/logout")
+@main_bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
